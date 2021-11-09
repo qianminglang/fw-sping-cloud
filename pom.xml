@@ -34,6 +34,7 @@
         <module>fw-cloud-easyexcel</module>
         <module>fw-cloud-springboot/fw-springboot-dynamic-datasource</module>
         <module>fw-cloud-elasticsearch</module>
+        <module>fw-cloud-springboot/fw-springboot-socket</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

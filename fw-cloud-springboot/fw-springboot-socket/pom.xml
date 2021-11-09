@@ -3,20 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>fw-sping-cloud</artifactId>
+        <artifactId>fw-cloud-springboot</artifactId>
         <groupId>com.yisu.cloud</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>fw-cloud-elasticsearch</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>fw-cloud-elasticsearch-custom6</module>
-        <module>fw-cloud-elasticsearch-es7-starter-data</module>
-    </modules>
+    <artifactId>fw-springboot-socket</artifactId>
 
+    <dependencies>
+        <!--用户信息获取-->
+        <dependency>
+            <groupId>com.akucun.member.auth</groupId>
+            <artifactId>member-auth-spring2-starter</artifactId>
+            <version>2.0.1-SNAPSHOT</version>
+        </dependency>
 
-
+    </dependencies>
 
 </project>
