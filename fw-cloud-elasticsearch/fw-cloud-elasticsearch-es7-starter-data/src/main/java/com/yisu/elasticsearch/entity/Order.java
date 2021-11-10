@@ -15,7 +15,7 @@ import java.util.Date;
  * @date 2020/10/26
  */
 @Data
-@Document(indexName = "order_index_2021",type = "_doc", shards = 5, replicas = 0)
+@Document(indexName = "order_index_2022",type = "test", shards = 5, replicas = 0)
 public class Order {
 
 
@@ -24,49 +24,41 @@ public class Order {
     /**
      * 店铺ID
      */
-    @Field(type = FieldType.Integer)
     @JSONField(name="store_id")
     private int storeId;
 
     /**
      * 店铺名字
      */
-    @Field(type = FieldType.Keyword)
     @JSONField(name="store_name")
     private String storeName;
 
     /**
      * 类目ID
      */
-    @Field(type = FieldType.Integer)
     @JSONField(name="category_id")
     private int categoryId;
     /**
      * 类目名称
      */
-    @Field(type = FieldType.Keyword)
     @JSONField(name="category_code")
     private String categoryCode;
     /**
      * 货号
      */
-    @Field(type = FieldType.Keyword)
     @JSONField(name="product_code")
     private String productCode;
     /**
      * 销售件数
      */
-    @Field(type = FieldType.Integer)
     private int quantity;
     /**
      * 销售金额
      */
-    @Field(type = FieldType.Double)
     private double amount;
     /**
      * 支付时间
      */
-    @Field(type = FieldType.Date)
     @JSONField(name="pay_date")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date payDate;

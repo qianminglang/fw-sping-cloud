@@ -2,18 +2,21 @@ package com.yisu.elasticsearch;
 
 import cn.hutool.json.JSONUtil;
 import com.yisu.elasticsearch.entity.Order;
-import com.yisu.elasticsearch.entity.SortingField;
 import com.yisu.elasticsearch.repository.OrderRepository;
 import com.yisu.elasticsearch.service.ElasticService;
-import org.apache.lucene.search.SortField;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -28,6 +31,12 @@ public class QueryServiceTest {
 
     @Autowired
     private ElasticService elasticService;
+
+    @Autowired
+    private ElasticsearchRestTemplate elasticsearchTemplate;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     /**
      *
@@ -44,8 +53,8 @@ public class QueryServiceTest {
             order.setStoreId(j);
             order.setStoreName("旗舰店"+ j);
             order.setCategoryId(j);
-            order.setCategoryCode("shirt_"+j);
-            order.setProductCode("product_"+i);
+            order.setCategoryCode("目录"+j);
+            order.setProductCode("产品"+i);
             order.setQuantity(random.nextInt(20) % 20 + 1);
             order.setAmount(200 + (random.nextInt(20) % 20 + 1));
             order.setPayDate(new Date());
@@ -72,6 +81,29 @@ public class QueryServiceTest {
     public void searchByKeyWords(){
         List<Order> orders = elasticService.findAll();
         System.out.println(JSONUtil.toJsonStr(orders));
+    }
+
+
+
+    @Test
+    public void search(){
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.should(QueryBuilders.wildcardQuery("storeName.keyword", "*旗舰店1*"));
+//        boolQueryBuilder.should(QueryBuilders.wildcardQuery("categoryCode.keyword", "*目录1*"));
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(boolQueryBuilder)
+                .withPageable(PageRequest.of(0, 2))
+                .build();
+
+//        Page<Order> orders = orderRepository.search(searchQuery);
+//        System.out.println(JSONUtil.toJsonStr(orders));
+//        System.out.println("总页数："+orders.getTotalPages());
+//        System.out.println("总数量："+orders.getTotalElements());
+
+        AggregatedPage<Order> orders = elasticsearchTemplate.queryForPage(searchQuery, Order.class);
+        System.out.println(JSONUtil.toJsonStr(orders));
+        System.out.println("总页数："+orders.getTotalPages());
+        System.out.println("总数量："+orders.getTotalElements());
     }
 
 
