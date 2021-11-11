@@ -1,6 +1,7 @@
 package com.yisu.elasticsearch;
 
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.yisu.elasticsearch.entity.Order;
 import com.yisu.elasticsearch.repository.OrderRepository;
 import com.yisu.elasticsearch.service.ElasticService;
@@ -46,7 +47,7 @@ public class QueryServiceTest {
     @Test
     public void save(){
         Random random = new Random();
-        for(int i = 0 ; i < 10; i++){
+        for(int i = 11 ; i < 20; i++){
             Order order = new Order();
             int j = random.nextInt(20) % 20 + 1;
             order.setId(i);
@@ -58,6 +59,7 @@ public class QueryServiceTest {
             order.setQuantity(random.nextInt(20) % 20 + 1);
             order.setAmount(200 + (random.nextInt(20) % 20 + 1));
             order.setPayDate(new Date());
+            order.setStoreName(JSON.toJSONString(order));
             elasticService.save(order);
         }
 
@@ -92,7 +94,7 @@ public class QueryServiceTest {
 //        boolQueryBuilder.should(QueryBuilders.wildcardQuery("categoryCode.keyword", "*目录1*"));
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(boolQueryBuilder)
-                .withPageable(PageRequest.of(0, 2))
+                .withPageable(PageRequest.of(0, 10))
                 .build();
 
 //        Page<Order> orders = orderRepository.search(searchQuery);
