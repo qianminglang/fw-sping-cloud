@@ -4,7 +4,6 @@ import groovy.lang.Script;
 
 /**
  * @author xuyisu
- * @description //TODO
  * @date 2021/11/12
  */
 public class DemoScript extends Script {
